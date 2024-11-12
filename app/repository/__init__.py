@@ -1,0 +1,4 @@
+from .cartao_repository import CartaoRepository
+from .estatistica_repository import EstatisticaRepository
+from .gol_repository import GolRepository
+from .partida_repository import PartidaRepository

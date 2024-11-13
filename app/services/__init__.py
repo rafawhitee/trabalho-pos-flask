@@ -1,1 +1,2 @@
+from .estatistica_service import EstatisticaService
 from .partida_service import PartidaService

@@ -11,4 +11,8 @@ cartao_repository = CartaoRepository()
 class PartidaService:
 
     def find_by_id(self, id: int) -> dict:
-        return repository.find_by_id(id)
+        partida: dict = repository.find_by_id(id)
+        partida["gols"] = gol_repository.find_by_partida(id)
+        partida["estatisticas"] = estatistica_repository.find_by_partida(id)
+        partida["cartoes"] = cartao_repository.find_by_partida(id)
+        return partida

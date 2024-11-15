@@ -38,7 +38,7 @@ def create_year_col(df: pd.DataFrame) -> pd.DataFrame:
     df["ano"] = df['data'].dt.year.astype(str)
     return df
 
-def get_all_rows_by_dict_key(data: List[dict], key: str, parent_fields: List[str] | None) -> List[dict]:
+def get_all_rows_by_dict_key(data: List[dict], key: str, parent_fields: List[str] | None = None) -> List[dict]:
     rows = []
     for item in data:
         item_key_value = item[key]

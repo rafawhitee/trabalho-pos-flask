@@ -28,6 +28,7 @@ def generate_graphs_to_team(time: str, data: List[dict]) -> Any:
 
     # Gráfico de Cartões Amarelos do Clube por Rodada
     plt.figure(figsize=(8, 6))
+    plt.title(f'Cartões Amarelos do {time}')
     sns.histplot(data=estatisticas[estatisticas["clube"].str.upper() == time.upper()], x='cartao_amarelo', 
                  hue="ano", palette='Set2', multiple="stack", discrete=True)
     st.pyplot(plt)

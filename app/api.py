@@ -15,5 +15,9 @@ def statistics():
 def find_by_id(id):
     return jsonify(partida_service.find_by_id(int(id)))
 
+@app.route('/api/team/<team>', methods=['GET'])
+def find_all_by_team(team):
+    return jsonify(partida_service.find_all_by_team(team))
+
 if __name__ == '__main__':
     app.run(debug=True)

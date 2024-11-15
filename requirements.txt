@@ -1,4 +1,6 @@
 Flask==3.0.3
 pandas==2.2.3
 streamlit==1.40.1
+seaborn==0.13.2
+matplotlib==3.9.2
 requests==2.32.3

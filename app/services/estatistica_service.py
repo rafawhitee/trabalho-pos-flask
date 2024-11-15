@@ -1,6 +1,5 @@
-import pandas as pd
 from typing import Any
-from utils.pandas_utils import do_basic_statistics_by_column, remove_not_numbers_values
+from utils.pandas_utils import do_basic_statistics_by_column
 from repositories.estatistica_repository import EstatisticaRepository
 
 repository = EstatisticaRepository()

@@ -1,15 +1,29 @@
 from typing import List
 import pandas as pd
 
-df = pd.read_csv('partidas.csv')
-
 class PartidaRepository:
     
+    def __init__(self):
+        self.df = self._read_dataframe()
+
+    def find_all_by_team(self, team: str) -> List[dict]:
+        filters = (self.df["mandante"].str.upper() == team.upper()) | (self.df["visitante"].str.upper() == team.upper())
+        return self.df[filters].to_dict(orient='records')
+
     def find_by_id(self, id: int) -> dict:
-        return df[df["ID"] == id].to_dict(orient='records')[0]
+        return self.df[self.df["ID"] == id].to_dict(orient='records')[0]
     
     def find_all(self) -> List[dict]:
-        return df.to_dict(orient='records')
+        return self.df.to_dict(orient='records')
 
     def get_dataframe(self) -> pd.DataFrame:
+        return self.df
+    
+    def update_dataframe(self) -> None:
+        self.df = self._read_dataframe()
+        
+    def _read_dataframe(self) -> None:
+        df = pd.read_csv('partidas.csv')
+        df['data_formatada'] = df['data']
+        df['data'] = pd.to_datetime(df['data'], format='%d/%m/%Y')
         return df

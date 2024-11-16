@@ -1,3 +1,4 @@
+import pandas as pd
 from typing import List
 from repositories.cartao_repository import CartaoRepository
 from repositories.estatistica_repository import EstatisticaRepository
@@ -11,6 +12,10 @@ cartao_repository = CartaoRepository()
 
 class PartidaService:
 
+    def update_dataframe(self, request_body: List[dict]) -> None:
+        new_data = pd.DataFrame(request_body)
+        repository.update_dataframe(new_data)
+        
     def find_all_by_team(self, team: str) -> List[dict]:
         partidas: List[dict] = repository.find_all_by_team(team)
         for partida in partidas:

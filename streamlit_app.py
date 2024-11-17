@@ -28,15 +28,24 @@ def get_partida_by_id(partida_id: int) -> dict:
     return response.json() if response and response.status_code == 200 else None
 
 def generate_graphs_to_team(time: str, data: List[dict]) -> Any:
-    gols: pd.DataFrame = create_year_col(pd.DataFrame(get_all_rows_by_dict_key(data, "gols", ["data"])))
-    gols_feitos: pd.DataFrame = gols[gols["clube"].str.upper() == time.upper()]
+    df = pd.DataFrame(data)
+    df["data"] = pd.to_datetime(df["data"], format='%d/%m/%Y')
+    df["ano"] = df['data'].dt.year.astype(str)
+    df_mandante = df[df["mandante"].str.upper() == time.upper()]
+    df_visitante = df[df["visitante"].str.upper() == time.upper()]
 
-    # Gráfico de Gols Feitos por Ano
+    gols_mandante_por_ano = df_mandante.groupby(["mandante", "ano"])["mandante_Placar"].sum().reset_index()
     plt.figure(figsize=(8, 6))
-    plt.title(f'Gols Feitos do {time} por Ano')
-    ax_gols_feitos = sns.histplot(data=gols_feitos, x='clube', 
-                hue="ano", palette='Set2', multiple="dodge", discrete=True)
-    add_specify_number_on_histplot(ax_gols_feitos)
+    plt.title(f'Gols Feitos {time} (mandante) por Ano')
+    ax_gols_mandante = sns.barplot(data=gols_mandante_por_ano, x='mandante', y="mandante_Placar", hue="ano", palette="Set2")
+    add_specify_number_on_histplot(ax_gols_mandante)
+    st.pyplot(plt)
+
+    gols_visitante_por_ano = df_visitante.groupby(["visitante", "ano"])["visitante_Placar"].sum().reset_index()
+    plt.figure(figsize=(8, 6))
+    plt.title(f'Gols Feitos {time} (mandante) por Ano')
+    ax_gols_visitante = sns.barplot(data=gols_visitante_por_ano, x='visitante', y="visitante_Placar", hue="ano", palette="Set2")
+    add_specify_number_on_histplot(ax_gols_visitante)
     st.pyplot(plt)
 
 def add_specify_number_on_histplot(ax):
@@ -45,11 +54,6 @@ def add_specify_number_on_histplot(ax):
         if height > 0: 
             x = patch.get_x() + patch.get_width() / 2
             ax.text(x, height + 0.5, f'{int(height)}', ha='center', fontsize=10, color='black')
-
-def create_year_col(df: pd.DataFrame) -> pd.DataFrame:
-    df["data"] = pd.to_datetime(df["data"], format='%d/%m/%Y')
-    df["ano"] = df['data'].dt.year.astype(str)
-    return df
 
 def get_all_rows_by_dict_key(data: List[dict], key: str, parent_fields: List[str] | None = None) -> List[dict]:
     rows = []
